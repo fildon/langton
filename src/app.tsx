@@ -64,6 +64,8 @@ const StateDisplay = ({ state }: { state: BoardState }) => {
 			.map((n) => ZOOM * n)
 			.map((n) => n + RADIUS * ZOOM);
 		context.fillStyle = "red";
+		// Divisions here make the ant appear as a smaller square centered in the cell
+		// This means we can see the colour of the cell it is standing on
 		context.fillRect(x + ZOOM / 4, y + ZOOM / 4, ZOOM / 2, ZOOM / 2);
 	}, [state]);
 
