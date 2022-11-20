@@ -73,6 +73,8 @@ const StateDisplay = ({ state }: { state: BoardState }) => {
 				border: "1px solid black",
 				height: 2 * RADIUS * ZOOM,
 				width: 2 * RADIUS * ZOOM,
+				margin: "auto",
+				marginTop: "1rem",
 			}}
 			ref={canvasRef}
 		></canvas>
@@ -82,6 +84,8 @@ const StateDisplay = ({ state }: { state: BoardState }) => {
 export const App = () => {
 	const { step, reset, state, generation } = useEngine();
 
+	const [stepSize, setStepSize] = useState(1);
+
 	return (
 		<main className="stack center">
 			<h1>{"Langton's Ant"}</h1>
@@ -89,8 +93,20 @@ export const App = () => {
 				Source code here:{" "}
 				<a href="https://github.com/fildon/langton">langton</a>
 			</p>
-			<button onClick={() => step(100)}>Step</button>
-			<button onClick={reset}>Reset</button>
+			<section>
+				<h2>Controls</h2>
+				<label>
+					Step size
+					<input
+						type="number"
+						value={stepSize}
+						onChange={(e) => setStepSize(parseInt(e.target.value))}
+						style={{ display: "block" }}
+					></input>
+				</label>
+				<button onClick={() => step(stepSize)}>Step</button>
+				<button onClick={reset}>Reset</button>
+			</section>
 			<span>{`Generation: ${generation}`}</span>
 			<StateDisplay state={state} />
 		</main>

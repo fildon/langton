@@ -28,6 +28,11 @@ main * {
 
 section {
 	border: 1px solid black;
+	padding: 1rem;
+}
+
+button {
+	padding: 1rem;
 }
 
 /* Composition */
