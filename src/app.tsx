@@ -41,6 +41,10 @@ export const App = () => {
 	return (
 		<main className="stack center">
 			<h1>{"Langton's Ant"}</h1>
+			<p>
+				Source code here:{" "}
+				<a href="https://github.com/fildon/langton">langton</a>
+			</p>
 			<button onClick={step}>Step</button>
 			<button onClick={reset}>Reset</button>
 			<span>{`Generation: ${generation}`}</span>
