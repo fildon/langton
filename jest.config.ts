@@ -1,22 +1,14 @@
-import type {Config} from 'jest';
+import type { Config } from "jest";
 
 const config: Config = {
 	verbose: true,
-	preset: 'ts-jest',
-	setupFilesAfterEnv: ['<rootDir>/jest-setup.ts'],
-	testEnvironment: 'jsdom',
+	preset: "ts-jest",
+	setupFilesAfterEnv: ["<rootDir>/jest-setup.ts"],
+	testEnvironment: "jsdom",
 	collectCoverage: true,
-	collectCoverageFrom: ['**/src/**'],
+	collectCoverageFrom: ["**/src/**"],
 	// This is the imperative shell and will not be tested
-	coveragePathIgnorePatterns: ['src/index.tsx'],
-	coverageThreshold: {
-		global: {
-			branches: 100,
-			functions: 100,
-			lines: 100,
-			statements: 100,
-		},
-	},
+	coveragePathIgnorePatterns: ["src/index.tsx"],
 };
 
 export default config;
