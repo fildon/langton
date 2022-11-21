@@ -69,7 +69,7 @@ export const App = () => {
 						history.pushState(
 							null,
 							"",
-							`${window.location.pathname}?generation=${generation + 1}}`
+							`${window.location.pathname}?generation=${generation + 1}`
 						);
 						step();
 					}}
@@ -81,7 +81,7 @@ export const App = () => {
 						history.pushState(
 							null,
 							"",
-							`${window.location.pathname}?generation=0}`
+							`${window.location.pathname}?generation=0`
 						);
 						reset();
 					}}
@@ -97,7 +97,7 @@ export const App = () => {
 						history.pushState(
 							null,
 							"",
-							`${window.location.pathname}?generation=${generation}}`
+							`${window.location.pathname}?generation=${generation}`
 						);
 						setPlaying(false);
 					}}
