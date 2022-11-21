@@ -72,6 +72,15 @@ export const App = () => {
 				<button disabled={!playing} onClick={() => setPlaying(false)}>
 					Pause
 				</button>
+				<button
+					onClick={() =>
+						void navigator.clipboard.writeText(
+							`https://fildon.me/langton/?generation=${generation}`
+						)
+					}
+				>
+					Copy shareable link to this generation
+				</button>
 			</section>
 			<span>{`Generation: ${generation}`}</span>
 			<StateDisplay state={state} />
