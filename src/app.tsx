@@ -1,11 +1,25 @@
 import { useEffect, useRef, useState } from "react";
 
-import { advanceState, initialState } from "./engine";
+import { advanceState, BoardState, initialState } from "./engine";
 import { StateDisplay } from "./stateDisplay";
 
 const useEngine = () => {
-	const [generation, setGeneration] = useState(0);
-	const [state, setState] = useState(initialState);
+	const [generation, setGeneration] = useState(() => {
+		const stringValue = new URLSearchParams(window.location.search).get(
+			"generation"
+		);
+		if (!stringValue) return 0;
+		const intValue = parseInt(stringValue);
+		if (isNaN(intValue)) return 0;
+		// Ignore negative values
+		return Math.max(intValue, 0);
+	});
+	const [state, setState] = useState(() =>
+		Array.from({ length: generation }).reduce<BoardState>(
+			(priorState) => advanceState(priorState),
+			initialState
+		)
+	);
 
 	const step = () => {
 		setState(advanceState);
