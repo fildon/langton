@@ -64,22 +64,45 @@ export const App = () => {
 						style={{ display: "block" }}
 					></input>
 				</label>
-				<button onClick={() => step()}>Step</button>
-				<button onClick={reset}>Reset</button>
+				<button
+					onClick={() => {
+						history.pushState(
+							null,
+							"",
+							`${window.location.pathname}?generation=${generation + 1}}`
+						);
+						step();
+					}}
+				>
+					Step
+				</button>
+				<button
+					onClick={() => {
+						history.pushState(
+							null,
+							"",
+							`${window.location.pathname}?generation=0}`
+						);
+						reset();
+					}}
+				>
+					Reset
+				</button>
 				<button disabled={playing} onClick={() => setPlaying(true)}>
 					Play
 				</button>
-				<button disabled={!playing} onClick={() => setPlaying(false)}>
-					Pause
-				</button>
 				<button
-					onClick={() =>
-						void navigator.clipboard.writeText(
-							`https://fildon.me/langton/?generation=${generation}`
-						)
-					}
+					disabled={!playing}
+					onClick={() => {
+						history.pushState(
+							null,
+							"",
+							`${window.location.pathname}?generation=${generation}}`
+						);
+						setPlaying(false);
+					}}
 				>
-					Copy shareable link to this generation
+					Pause
 				</button>
 			</section>
 			<span>{`Generation: ${generation}`}</span>
