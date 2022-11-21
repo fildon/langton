@@ -1,21 +1,15 @@
 import { useEffect, useRef, useState } from "react";
 
-import { advanceState, initialState, type BoardState } from "./engine";
+import { advanceState, initialState } from "./engine";
 import { StateDisplay } from "./stateDisplay";
 
 const useEngine = () => {
 	const [generation, setGeneration] = useState(0);
 	const [state, setState] = useState(initialState);
 
-	const step = (steps = 1) => {
-		if (steps < 1) return;
-		const newState = Array.from({ length: steps }).reduce<BoardState>(
-			(priorState) => advanceState(priorState),
-			state
-		);
-
-		setState(newState);
-		setGeneration((x) => x + steps);
+	const step = () => {
+		setState(advanceState);
+		setGeneration((x) => x + 1);
 	};
 	const reset = () => {
 		setState(initialState);
@@ -27,7 +21,6 @@ const useEngine = () => {
 
 export const App = () => {
 	const { step, reset, state, generation } = useEngine();
-	const [stepSize, setStepSize] = useState(1);
 	const [frameDelay, setFrameDelay] = useState(500);
 	const [playing, setPlaying] = useState(false);
 	const intervalRef = useRef<NodeJS.Timer>();
@@ -49,15 +42,6 @@ export const App = () => {
 			<section>
 				<h2>Controls</h2>
 				<label>
-					Step size
-					<input
-						type="number"
-						value={stepSize}
-						onChange={(e) => setStepSize(parseInt(e.target.value))}
-						style={{ display: "block" }}
-					></input>
-				</label>
-				<label>
 					Frame delay (milliseconds)
 					<input
 						type="number"
@@ -66,7 +50,7 @@ export const App = () => {
 						style={{ display: "block" }}
 					></input>
 				</label>
-				<button onClick={() => step(stepSize)}>Step</button>
+				<button onClick={() => step()}>Step</button>
 				<button onClick={reset}>Reset</button>
 				<button disabled={playing} onClick={() => setPlaying(true)}>
 					Play
