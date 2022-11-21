@@ -31,6 +31,14 @@ section {
 	padding: 1rem;
 }
 
+section > * + * {
+	margin-top: 1rem;
+}
+
+label {
+	display: block;
+}
+
 button {
 	padding: 1rem;
 }
