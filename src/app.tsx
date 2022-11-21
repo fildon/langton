@@ -2,11 +2,60 @@ import { useEffect, useRef, useState } from "react";
 
 import { advanceState, initialState, type BoardState } from "./engine";
 
+/**
+ * Like React's useState, but synchronizes with a query param
+ */
+const useParamState = (paramName: string) => {
+	const [state, setState] = useState(() => {
+		const stringValue = new URLSearchParams(window.location.search).get(
+			paramName
+		);
+		if (!stringValue) {
+			const newSearchParams = new URLSearchParams();
+			newSearchParams.set(paramName, "0");
+			window.location.search = newSearchParams.toString();
+			return 0;
+		}
+		const intValue = parseInt(stringValue);
+		if (isNaN(intValue)) {
+			const newSearchParams = new URLSearchParams();
+			newSearchParams.set(paramName, "0");
+			window.location.search = newSearchParams.toString();
+			return 0;
+		}
+		if (intValue < 0) {
+			const newSearchParams = new URLSearchParams();
+			newSearchParams.set(paramName, "0");
+			window.location.search = newSearchParams.toString();
+			return 0;
+		}
+		return intValue;
+	});
+
+	return [
+		state,
+		(update) => {
+			console.log("hello?");
+			const newValue = typeof update === "number" ? update : update(state);
+			const newSearchParams = new URLSearchParams(window.location.search);
+			newSearchParams.set(paramName, newValue.toString());
+			window.location.search = newSearchParams.toString();
+			setState(newValue);
+		},
+	] as [number, (update: number | ((oldState: number) => number)) => void];
+};
+
 const useEngine = () => {
-	const [state, setState] = useState(initialState);
-	const [generation, setGeneration] = useState(0);
+	const [generation, setGeneration] = useParamState("generation");
+	const [state, setState] = useState(() =>
+		Array.from({ length: generation }).reduce<BoardState>(
+			(priorState) => advanceState(priorState),
+			initialState
+		)
+	);
 
 	const step = (steps = 1) => {
+		if (steps < 1) return;
 		const newState = Array.from({ length: steps }).reduce<BoardState>(
 			(priorState) => advanceState(priorState),
 			state
@@ -32,13 +81,10 @@ const StateDisplay = ({ state }: { state: BoardState }) => {
 	// How far are the edges from the center?
 	const RADIUS = 30;
 	useEffect(() => {
-		console.log("a");
 		const canvasElement = canvasRef.current;
 		if (!canvasElement) return;
-		console.log("b");
 		const context = canvasElement.getContext("2d");
 		if (!context) return;
-		console.log("c");
 
 		canvasElement.height = 2 * RADIUS * ZOOM;
 		canvasElement.width = 2 * RADIUS * ZOOM;
