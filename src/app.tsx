@@ -13,20 +13,26 @@ const useParamState = (paramName: string) => {
 		if (!stringValue) {
 			const newSearchParams = new URLSearchParams();
 			newSearchParams.set(paramName, "0");
-			window.location.search = newSearchParams.toString();
+			const newRelativePathQuery =
+				window.location.pathname + "?" + newSearchParams.toString();
+			history.pushState(null, "", newRelativePathQuery);
 			return 0;
 		}
 		const intValue = parseInt(stringValue);
 		if (isNaN(intValue)) {
 			const newSearchParams = new URLSearchParams();
 			newSearchParams.set(paramName, "0");
-			window.location.search = newSearchParams.toString();
+			const newRelativePathQuery =
+				window.location.pathname + "?" + newSearchParams.toString();
+			history.pushState(null, "", newRelativePathQuery);
 			return 0;
 		}
 		if (intValue < 0) {
 			const newSearchParams = new URLSearchParams();
 			newSearchParams.set(paramName, "0");
-			window.location.search = newSearchParams.toString();
+			const newRelativePathQuery =
+				window.location.pathname + "?" + newSearchParams.toString();
+			history.pushState(null, "", newRelativePathQuery);
 			return 0;
 		}
 		return intValue;
@@ -39,7 +45,9 @@ const useParamState = (paramName: string) => {
 			const newValue = typeof update === "number" ? update : update(state);
 			const newSearchParams = new URLSearchParams(window.location.search);
 			newSearchParams.set(paramName, newValue.toString());
-			window.location.search = newSearchParams.toString();
+			const newRelativePathQuery =
+				window.location.pathname + "?" + newSearchParams.toString();
+			history.pushState(null, "", newRelativePathQuery);
 			setState(newValue);
 		},
 	] as [number, (update: number | ((oldState: number) => number)) => void];
